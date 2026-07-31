@@ -7,7 +7,8 @@ import {
   Gauge, 
   ShieldCheck, 
   AlertTriangle,
-  Leaf
+  Leaf,
+  Flower2
 } from 'lucide-react';
 
 export const PollutionView = () => {
@@ -23,11 +24,11 @@ export const PollutionView = () => {
   const aqiInfo = getAqiStatus(pollution.aqi);
 
   const districtPollution = [
-    { name: 'Eco Park Reserve', aqi: 14, status: 'Good', noise: '38 dBA' },
-    { name: 'Residential Bay', aqi: 28, status: 'Good', noise: '44 dBA' },
-    { name: 'Downtown Center', aqi: 45, status: 'Good', noise: '62 dBA' },
-    { name: 'Harbor Logistics', aqi: 58, status: 'Moderate', noise: '68 dBA' },
-    { name: 'Industrial Smelter Hub', aqi: 82, status: 'Moderate', noise: '76 dBA' }
+    { name: 'Eco Park Reserve', aqi: 14, status: 'Good', noise: '38 dBA', green: '84%' },
+    { name: 'Residential Bay', aqi: 28, status: 'Good', noise: '44 dBA', green: '42%' },
+    { name: 'Downtown Center', aqi: 45, status: 'Good', noise: '62 dBA', green: '18%' },
+    { name: 'Harbor Logistics', aqi: 58, status: 'Moderate', noise: '68 dBA', green: '12%' },
+    { name: 'Industrial Smelter Hub', aqi: 82, status: 'Moderate', noise: '76 dBA', green: '8%' }
   ];
 
   return (
@@ -83,14 +84,14 @@ export const PollutionView = () => {
         <div className="glass-panel p-5 rounded-2xl flex flex-col gap-4">
           <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
             <Gauge className="w-4 h-4 text-teal-400" />
-            District Environmental Scorecard
+            District Environmental Scorecard & Green Canopy
           </h3>
           <div className="flex flex-col gap-3 font-mono text-xs">
             {districtPollution.map((d, i) => (
               <div key={i} className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="text-white font-bold block">{d.name}</span>
-                  <span className="text-slate-400 text-[10px]">Noise Level: {d.noise}</span>
+                  <span className="text-slate-400 text-[10px]">Noise: {d.noise} • Green Canopy: {d.green}</span>
                 </div>
                 <div className="text-right">
                   <span className="text-teal-400 font-bold text-sm block">AQI {d.aqi}</span>
