@@ -1,4 +1,4 @@
-# Smart City Digital Twin 🌆 | Central Command Hub
+# Smart City Digital Twin 🌆 | Central Command Hub (v3.8)
 
 A state-of-the-art, interactive 3D **Smart City Digital Twin** dashboard built with **React**, **Vite**, **Three.js**, and **Tailwind CSS**.
 
@@ -18,9 +18,37 @@ GitHub Repository: [https://github.com/YAGAVI2006/Smartcity](https://github.com/
   - ⚡ **Energy Grid**: Solar/Wind/Hydro renewable generation share, 50.02 Hz frequency stability, substation loads, EV charging occupancy.
   - 🍃 **AQI & Environment**: EPA air quality scorecard, PM2.5, PM10, CO2 ppm, NO2, decibel noise levels, urban bio-scrubbers.
   - ♻️ **Smart Waste**: IoT dumpster fill capacity, full bin alerts (>80%), truck route optimization, recycling sorting efficiency.
-  - 🌧️ **Weather Control**: Temperature, humidity, wind velocity, UV index, 12-hr forecast, rain & heatwave crisis triggers.
-  - 📣 **Citizen Complaints**: Crowdsourced civic operations ticket stream, priority filtering, resolution action buttons, issue report modal.
-  - 🧠 **AI Scenario Lab**: OmniCity AI natural language query box, live diagnostic logs, and interactive "What-If" crisis simulator (*Heatwave*, *Flash Flood*, *Blackout*).
+  - 🌧️ **Weather Control**: Temperature, humidity, wind velocity, UV index, 5-day & 12-hr forecast, rain & heatwave crisis triggers.
+  - 📣 **Citizen Complaints**: Crowdsourced civic operations ticket stream, priority filtering, resolution action buttons, issue report modal, search & upvotes.
+  - 🧠 **AI Scenario Lab**: OmniCity AI natural language query box with shortcut chips, live diagnostic logs, and interactive "What-If" crisis simulator (*Heatwave*, *Flash Flood*, *Blackout*).
+
+---
+
+## 🏗 System Architecture Diagram
+
+```
++-------------------------------------------------------------------+
+|                        NEO-VERIDIAN APP SHELL                     |
+|                                                                   |
+|  +------------------+  +---------------------------------------+  |
+|  |     HEADER       |  | Live Clock | Scenario Status | District|  |
+|  +------------------+  +---------------------------------------+  |
+|                                                                   |
+|  +------------------+  +---------------------------------------+  |
+|  |     SIDEBAR      |  | 3D Digital Twin | Traffic | Water     |  |
+|  |   (Collapsible)  |  | Energy | AQI | Waste | Weather | AI   |  |
+|  +------------------+  +---------------------------------------+  |
+|                                                                   |
+|  +-------------------------------------------------------------+  |
+|  |             3D DIGITAL TWIN CANVAS (Three.js)               |  |
+|  |     Buildings | Vehicles | Power Lines | Weather Overlays    |  |
+|  +-------------------------------------------------------------+  |
+|                                                                   |
+|  +-------------------------------------------------------------+  |
+|  |                 8 SUBSYSTEM TELEMETRY GRID                  |  |
+|  +-------------------------------------------------------------+  |
++-------------------------------------------------------------------+
+```
 
 ---
 
@@ -57,7 +85,7 @@ The output will be in the `dist/` directory ready for deployment to Vercel, Netl
 
 ---
 
-## 🛠️ Push Code to GitHub
+## 🛠️ Git Contribution Sync
 
 ```bash
 git push -u origin main
