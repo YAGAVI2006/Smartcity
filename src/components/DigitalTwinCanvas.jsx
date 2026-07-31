@@ -12,7 +12,8 @@ import {
   Car, 
   RefreshCw, 
   Info,
-  X
+  X,
+  Compass
 } from 'lucide-react';
 
 export const DigitalTwinCanvas = () => {
@@ -36,7 +37,6 @@ export const DigitalTwinCanvas = () => {
   const buildingsMeshGroup = useRef(null);
   const trafficParticlesGroup = useRef(null);
   const layerVisualsGroup = useRef(null);
-  const rainParticlesGroup = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -66,10 +66,10 @@ export const DigitalTwinCanvas = () => {
     rendererRef.current = renderer;
 
     // 2. LIGHTING & ENVIRONMENT
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
     dirLight.position.set(50, 80, 40);
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 2048;
@@ -77,7 +77,7 @@ export const DigitalTwinCanvas = () => {
     scene.add(dirLight);
 
     // Cyan/Purple Cyber Spotlight
-    const spotLight = new THREE.SpotLight(0x00f3ff, 2);
+    const spotLight = new THREE.SpotLight(0x00f3ff, 2.5);
     spotLight.position.set(-30, 50, -30);
     scene.add(spotLight);
 
@@ -138,7 +138,7 @@ export const DigitalTwinCanvas = () => {
           metalness: 0.8,
           roughness: 0.2,
           emissive: d.color,
-          emissiveIntensity: 0.15
+          emissiveIntensity: 0.18
         });
 
         const mesh = new THREE.Mesh(bGeo, bMat);
@@ -223,6 +223,7 @@ export const DigitalTwinCanvas = () => {
     // 7. RAYCASTING INTERACTION
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
+    let currentHoveredMesh = null;
 
     const handlePointerMove = (e) => {
       const rect = renderer.domElement.getBoundingClientRect();
@@ -234,8 +235,15 @@ export const DigitalTwinCanvas = () => {
 
       if (intersects.length > 0) {
         const hit = intersects[0].object;
+        if (currentHoveredMesh !== hit) {
+          if (currentHoveredMesh) currentHoveredMesh.material.emissiveIntensity = 0.18;
+          hit.material.emissiveIntensity = 0.6;
+          currentHoveredMesh = hit;
+        }
         setHoveredBuilding(hit.userData);
       } else {
+        if (currentHoveredMesh) currentHoveredMesh.material.emissiveIntensity = 0.18;
+        currentHoveredMesh = null;
         setHoveredBuilding(null);
       }
     };
@@ -288,7 +296,7 @@ export const DigitalTwinCanvas = () => {
 
       // Slow idle orbit rotation if Overview preset
       if (cameraPreset === 'Overview') {
-        angle += 0.001;
+        angle += 0.0012;
         camera.position.x = 60 * Math.sin(angle);
         camera.position.z = 60 * Math.cos(angle);
         camera.lookAt(0, 0, 0);
