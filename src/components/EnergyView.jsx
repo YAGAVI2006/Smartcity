@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCity } from '../context/CityContext';
 import { 
   Zap, 
@@ -8,12 +8,14 @@ import {
   BatteryCharging, 
   ShieldAlert, 
   CheckCircle2, 
-  Cpu
+  Cpu,
+  MapPin
 } from 'lucide-react';
 
 export const EnergyView = () => {
   const { metrics } = useCity();
   const { electricity } = metrics;
+  const [selectedSubstation, setSelectedSubstation] = useState(null);
 
   const totalRenewable = electricity.solar + electricity.wind + electricity.hydro;
   const renewableRatio = Math.round((totalRenewable / electricity.totalLoad) * 100);
@@ -23,6 +25,12 @@ export const EnergyView = () => {
     { name: 'Substation 02 (Tech Park)', load: '780 MW', capacity: '900 MW', status: 'Optimal', temp: '48°C' },
     { name: 'Substation 03 (Industrial)', load: '920 MW', capacity: '1000 MW', status: electricity.peakSurgeWarning ? 'HIGH LOAD' : 'Optimal', temp: electricity.peakSurgeWarning ? '68°C' : '52°C' },
     { name: 'Substation 04 (Residential)', load: '500 MW', capacity: '700 MW', status: 'Optimal', temp: '38°C' }
+  ];
+
+  const evHubs = [
+    { name: 'Downtown Supercharger Hub', chargers: '48 / 50 Active', speed: '350 kW DC Fast' },
+    { name: 'Tech Park Solar Canopy Hub', chargers: '92 / 100 Active', speed: '250 kW DC Fast' },
+    { name: 'Residential Bay Fast Hub', chargers: '120 / 150 Active', speed: '150 kW Fast' }
   ];
 
   return (
@@ -124,25 +132,20 @@ export const EnergyView = () => {
           </div>
         </div>
 
-        {/* Substation Nodes */}
+        {/* EV Hub Telemetry */}
         <div className="glass-panel p-5 rounded-2xl flex flex-col gap-4">
           <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-            <Zap className="w-4 h-4 text-cyan-400" />
-            District Substation Nodes
+            <BatteryCharging className="w-4 h-4 text-purple-400" />
+            Municipal EV Supercharger Telemetry
           </h3>
           <div className="flex flex-col gap-3 font-mono text-xs">
-            {substations.map((sub, i) => (
-              <div key={i} className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+            {evHubs.map((hub, idx) => (
+              <div key={idx} className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
                 <div>
-                  <span className="text-white font-bold block">{sub.name}</span>
-                  <span className="text-slate-400 text-[10px]">Temp: {sub.temp}</span>
+                  <span className="text-white font-bold block">{hub.name}</span>
+                  <span className="text-slate-400 text-[10px]">Charging Power: {hub.speed}</span>
                 </div>
-                <div className="text-right">
-                  <span className="text-amber-400 font-bold text-sm block">{sub.load} / {sub.capacity}</span>
-                  <span className={`text-[10px] font-bold ${sub.status === 'Optimal' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                    {sub.status}
-                  </span>
-                </div>
+                <span className="text-purple-400 font-bold">{hub.chargers}</span>
               </div>
             ))}
           </div>
