@@ -61,11 +61,12 @@ body {
   background: rgba(7, 9, 19, 0.8);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 243, 255, 0.2);
+  background: rgba(0, 243, 255, 0.25);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan-glow);
 }
 
 /* Typography Utilities */
