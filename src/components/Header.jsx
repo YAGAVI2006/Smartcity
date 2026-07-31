@@ -11,7 +11,9 @@ import {
   Zap, 
   Wind, 
   MapPin, 
-  ShieldAlert
+  ShieldAlert,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 export const Header = () => {
@@ -26,6 +28,7 @@ export const Header = () => {
   } = useCity();
 
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+  const [isAudioMuted, setIsAudioMuted] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -116,6 +119,19 @@ export const Header = () => {
       {/* Controls & Scenario Status */}
       <div className="flex items-center gap-3">
         {getScenarioBadge()}
+
+        {/* Ambient Sound Audio Toggle */}
+        <button 
+          onClick={() => setIsAudioMuted(!isAudioMuted)}
+          className={`p-2 rounded-lg border text-xs font-mono transition flex items-center gap-1 ${
+            isAudioMuted 
+              ? 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white' 
+              : 'bg-cyan-500/20 border-cyan-400 text-cyan-300'
+          }`}
+          title={isAudioMuted ? "Enable Ambient Telemetry Audio" : "Mute Telemetry Audio"}
+        >
+          {isAudioMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />}
+        </button>
 
         {/* District Selector */}
         <div className="flex items-center gap-1 bg-slate-900/80 border border-cyan-500/20 rounded-lg px-2 py-1 text-xs">
