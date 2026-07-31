@@ -76,13 +76,11 @@ const INITIAL_BUILDINGS = [
 
 export const CityProvider = ({ children }) => {
   const [activeTab, setActiveTab] = useState('digital-twin');
-  const [activeLayer, setActiveLayer] = useState('all'); // 'all', 'traffic', 'energy', 'water', 'pollution', 'waste', 'weather'
+  const [activeLayer, setActiveLayer] = useState('all');
   const [selectedBuilding, setSelectedBuilding] = useState(INITIAL_BUILDINGS[0]);
   const [selectedDistrict, setSelectedDistrict] = useState('All');
-  const [timeOfDay, setTimeOfDay] = useState('night'); // 'day', 'sunset', 'night'
-  
-  // AI Crisis Scenario state
-  const [activeScenario, setActiveScenario] = useState('NORMAL'); // 'NORMAL', 'HEATWAVE', 'FLASH_FLOOD', 'BLACKOUT'
+  const [timeOfDay, setTimeOfDay] = useState('night');
+  const [activeScenario, setActiveScenario] = useState('NORMAL');
 
   // Dynamic Telemetry Metrics
   const [metrics, setMetrics] = useState({
@@ -96,16 +94,16 @@ export const CityProvider = ({ children }) => {
       transitEta: '12 min'
     },
     water: {
-      totalSupply: 450, // MLD
+      totalSupply: 450,
       demand: 412,
-      reservoirLevel: 84, // %
-      avgPressure: 62, // PSI
+      reservoirLevel: 84,
+      avgPressure: 62,
       leaksDetected: 2,
       qualityScore: 96,
       pH: 7.3
     },
     electricity: {
-      totalLoad: 2840, // MW
+      totalLoad: 2840,
       solar: 780,
       wind: 520,
       hydro: 340,
@@ -119,22 +117,22 @@ export const CityProvider = ({ children }) => {
       aqi: 38,
       pm25: 12.4,
       pm10: 24.8,
-      co2: 412, // ppm
-      no2: 18.2, // ppb
-      noise: 54, // dBA
+      co2: 412,
+      no2: 18.2,
+      noise: 54,
       scrubbersActive: 48
     },
     waste: {
       totalBins: 1240,
       binsNeedingPickup: 86,
       trucksEnRoute: 14,
-      recyclingRate: 64, // %
+      recyclingRate: 64,
       hazardousAlerts: 0
     },
     weather: {
-      temp: 24, // °C
-      humidity: 58, // %
-      windSpeed: 14, // km/h
+      temp: 24,
+      humidity: 58,
+      windSpeed: 14,
       uvIndex: 4,
       condition: 'Clear Sky',
       isRaining: false,
@@ -158,7 +156,6 @@ export const CityProvider = ({ children }) => {
         const isFlood = activeScenario === 'FLASH_FLOOD';
         const isBlackout = activeScenario === 'BLACKOUT';
 
-        // Calculate dynamic fluctuations
         const congestionDelta = (Math.random() - 0.48) * 2;
         const newCongestion = Math.max(10, Math.min(98, Math.round(prev.traffic.congestion + (isFlood ? 2 : congestionDelta))));
 
@@ -242,6 +239,10 @@ export const CityProvider = ({ children }) => {
     setAiLogs(prev => [{ id: Date.now(), time: new Date().toLocaleTimeString(), type: 'info', msg: `New Citizen Complaint logged: "${ticket.title}" [${ticket.sector}]` }, ...prev]);
   };
 
+  const upvoteComplaint = (id) => {
+    setComplaints(prev => prev.map(c => c.id === id ? { ...c, upvotes: c.upvotes + 1 } : c));
+  };
+
   const updateComplaintStatus = (id, newStatus) => {
     setComplaints(prev => prev.map(c => c.id === id ? { ...c, status: newStatus } : c));
   };
@@ -277,7 +278,7 @@ export const CityProvider = ({ children }) => {
       timeOfDay, setTimeOfDay,
       activeScenario, triggerScenario,
       metrics, setMetrics,
-      complaints, addComplaint, updateComplaintStatus,
+      complaints, addComplaint, updateComplaintStatus, upvoteComplaint,
       buildings,
       aiLogs,
       dispatchLeakRepair, dispatchGarbageTruck, toggleSignalOverride
