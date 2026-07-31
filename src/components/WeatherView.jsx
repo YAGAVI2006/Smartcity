@@ -8,7 +8,8 @@ import {
   Compass, 
   CloudLightning, 
   Thermometer, 
-  Eye
+  Eye,
+  Calendar
 } from 'lucide-react';
 
 export const WeatherView = () => {
@@ -21,6 +22,14 @@ export const WeatherView = () => {
     { time: '21:00', temp: '20°C', condition: 'Clear Night', rain: '0%' },
     { time: '00:00', temp: '18°C', condition: 'Cool Breeze', rain: '0%' },
     { time: '03:00', temp: '17°C', condition: 'Mist', rain: '10%' },
+  ];
+
+  const weeklyForecast = [
+    { day: 'Mon', temp: '26°C / 18°C', rain: '10%', desc: 'Clear Sky' },
+    { day: 'Tue', temp: '28°C / 20°C', rain: '20%', desc: 'Partly Cloudy' },
+    { day: 'Wed', temp: '24°C / 17°C', rain: '65%', desc: 'Light Rain' },
+    { day: 'Thu', temp: '22°C / 16°C', rain: '80%', desc: 'Thunderstorms' },
+    { day: 'Fri', temp: '25°C / 18°C', rain: '15%', desc: 'Breezy' }
   ];
 
   return (
@@ -105,36 +114,21 @@ export const WeatherView = () => {
           </div>
         </div>
 
-        {/* Microclimate District Monitoring */}
+        {/* 5-Day Outlook */}
         <div className="glass-panel p-5 rounded-2xl flex flex-col gap-4">
           <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-            <Eye className="w-4 h-4 text-cyan-400" />
-            District Microclimate Sensors
+            <Calendar className="w-4 h-4 text-cyan-400" />
+            5-Day Municipal Weather Forecast
           </h3>
-          <div className="flex flex-col gap-3 font-mono text-xs">
-            <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
-              <div>
-                <span className="text-white font-bold block">Coastal Harbor Station</span>
-                <span className="text-slate-400 text-[10px]">High Humidity & Coastal Fog</span>
+          <div className="flex flex-col gap-2 font-mono text-xs">
+            {weeklyForecast.map((w, idx) => (
+              <div key={idx} className="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between">
+                <span className="text-white font-bold w-12">{w.day}</span>
+                <span className="text-slate-400">{w.desc}</span>
+                <span className="text-cyan-400 font-bold">{w.rain} Rain</span>
+                <span className="text-amber-400 font-bold">{w.temp}</span>
               </div>
-              <span className="text-cyan-400 font-bold">{weather.temp - 2}°C • 74% Humidity</span>
-            </div>
-
-            <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
-              <div>
-                <span className="text-white font-bold block">Downtown Urban Heat Island</span>
-                <span className="text-slate-400 text-[10px]">Concrete thermal reflection</span>
-              </div>
-              <span className="text-amber-400 font-bold">{weather.temp + 3}°C • 48% Humidity</span>
-            </div>
-
-            <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
-              <div>
-                <span className="text-white font-bold block">Eco Park Canopy Sensor</span>
-                <span className="text-slate-400 text-[10px]">Natural tree canopy cooling</span>
-              </div>
-              <span className="text-emerald-400 font-bold">{weather.temp - 1}°C • 64% Humidity</span>
-            </div>
+            ))}
           </div>
         </div>
       </div>
