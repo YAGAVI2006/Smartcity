@@ -12,7 +12,8 @@ import {
   Activity, 
   ShieldCheck,
   TrendingUp,
-  AlertTriangle
+  AlertTriangle,
+  HelpCircle
 } from 'lucide-react';
 
 export const AIAnalyticsView = () => {
@@ -25,21 +26,31 @@ export const AIAnalyticsView = () => {
     }
   ]);
 
-  const handleAiQuerySubmit = (e) => {
-    e.preventDefault();
-    if (!userQuery.trim()) return;
+  const presetQueries = [
+    'Analyze traffic light signal optimization',
+    'Check water reservoir level forecast',
+    'Evaluate power grid solar ratio',
+    'Assess AQI smog in Industrial District'
+  ];
 
-    let responseText = `OmniCity AI Diagnostic: Evaluated query "${userQuery}". All 6 districts cross-referenced. Current city health index is 96.4%. Infrastructure load parameters are within normal variance thresholds.`;
+  const handleAiQuerySubmit = (e, customText = null) => {
+    if (e) e.preventDefault();
+    const queryToUse = customText || userQuery;
+    if (!queryToUse.trim()) return;
 
-    if (userQuery.toLowerCase().includes('traffic') || userQuery.toLowerCase().includes('signal')) {
+    let responseText = `OmniCity AI Diagnostic: Evaluated query "${queryToUse}". All 6 districts cross-referenced. Current city health index is 96.4%. Infrastructure load parameters are within normal variance thresholds.`;
+
+    if (queryToUse.toLowerCase().includes('traffic') || queryToUse.toLowerCase().includes('signal')) {
       responseText = `Traffic AI Diagnostic: Congestion is currently at ${metrics.traffic.congestion}%. Signal automation rate is ${metrics.traffic.signalAutomation}%. Recommending 4-minute green wave extension along Main Street.`;
-    } else if (userQuery.toLowerCase().includes('water') || userQuery.toLowerCase().includes('leak')) {
+    } else if (queryToUse.toLowerCase().includes('water') || queryToUse.toLowerCase().includes('reservoir') || queryToUse.toLowerCase().includes('leak')) {
       responseText = `Hydraulics AI Diagnostic: Reservoir storage level is ${metrics.water.reservoirLevel}%. Leaks detected: ${metrics.water.leaksDetected}. Automated pressure balancing is active across Sector W-4.`;
-    } else if (userQuery.toLowerCase().includes('power') || userQuery.toLowerCase().includes('grid') || userQuery.toLowerCase().includes('energy')) {
+    } else if (queryToUse.toLowerCase().includes('power') || queryToUse.toLowerCase().includes('grid') || queryToUse.toLowerCase().includes('solar') || queryToUse.toLowerCase().includes('energy')) {
       responseText = `Energy AI Diagnostic: Grid load is ${metrics.electricity.totalLoad} MW. Renewable power share is ${Math.round(((metrics.electricity.solar + metrics.electricity.wind + metrics.electricity.hydro) / metrics.electricity.totalLoad) * 100)}%. EV charging station occupancy is 82%.`;
+    } else if (queryToUse.toLowerCase().includes('aqi') || queryToUse.toLowerCase().includes('smog') || queryToUse.toLowerCase().includes('pollution')) {
+      responseText = `Environmental AI Diagnostic: Citywide AQI is ${metrics.pollution.aqi} (Good). 48 Urban Bio-Scrubber units operating at 94% filtration efficiency.`;
     }
 
-    setAiAnswers(prev => [{ query: userQuery, response: responseText }, ...prev]);
+    setAiAnswers(prev => [{ query: queryToUse, response: responseText }, ...prev]);
     setUserQuery('');
   };
 
@@ -160,6 +171,22 @@ export const AIAnalyticsView = () => {
               <span>Query AI</span>
             </button>
           </form>
+
+          {/* Shortcut Chips */}
+          <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
+            <span className="text-slate-500 flex items-center gap-1">
+              <HelpCircle className="w-3 h-3 text-purple-400" /> Suggested:
+            </span>
+            {presetQueries.map((q, idx) => (
+              <button 
+                key={idx}
+                onClick={() => handleAiQuerySubmit(null, q)}
+                className="bg-slate-900 border border-slate-800 text-slate-300 hover:text-cyan-300 hover:border-cyan-500/30 px-2 py-0.5 rounded-lg transition cursor-pointer"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
 
           {/* Q&A Stream */}
           <div className="flex flex-col gap-3 max-h-80 overflow-y-auto font-mono text-xs pr-1">
