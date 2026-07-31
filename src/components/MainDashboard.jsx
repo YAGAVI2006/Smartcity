@@ -18,7 +18,8 @@ import {
   CloudRain, 
   MessageSquareWarning, 
   BrainCircuit,
-  ArrowRight
+  ArrowRight,
+  ShieldCheck
 } from 'lucide-react';
 
 export const MainDashboard = () => {
@@ -43,9 +44,14 @@ export const MainDashboard = () => {
 
       {/* 8-Subsystem Quick Overview Widget Cards */}
       <div>
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-          <span>CITY INFRASTRUCTURE LIVE TELEMETRY</span>
-        </h3>
+        <div className="flex justify-between items-center mb-3">
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <span>CITY INFRASTRUCTURE LIVE TELEMETRY</span>
+          </h3>
+          <span className="text-xs font-mono text-cyan-400 flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5" /> All 8 Telemetry Nodes Synchronized
+          </span>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Traffic Quick Card */}
