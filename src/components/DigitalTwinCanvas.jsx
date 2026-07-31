@@ -59,7 +59,7 @@ export const DigitalTwinCanvas = () => {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
 
     containerRef.current.innerHTML = '';
     containerRef.current.appendChild(renderer.domElement);
@@ -208,7 +208,6 @@ export const DigitalTwinCanvas = () => {
 
     // Power Grid Arcs
     const arcMat = new THREE.LineBasicMaterial({ color: 0x00f3ff, linewidth: 2 });
-    const arcPoints = [];
     for (let i = 0; i < 6; i++) {
       const p1 = new THREE.Vector3(districtCoords[i].offsetX, 8, districtCoords[i].offsetZ);
       const nextIdx = (i + 1) % 6;
