@@ -11,14 +11,16 @@ import {
   Filter, 
   X,
   Send,
-  ShieldAlert
+  ShieldAlert,
+  Search
 } from 'lucide-react';
 
 export const ComplaintsView = () => {
-  const { complaints, addComplaint, updateComplaintStatus } = useCity();
+  const { complaints, addComplaint, updateComplaintStatus, upvoteComplaint } = useCity();
 
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterPriority, setFilterPriority] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // New Form state
@@ -49,6 +51,7 @@ export const ComplaintsView = () => {
   const filteredComplaints = complaints.filter(item => {
     if (filterCategory !== 'All' && item.category !== filterCategory) return false;
     if (filterPriority !== 'All' && item.priority !== filterPriority) return false;
+    if (searchQuery && !item.title.toLowerCase().includes(searchQuery.toLowerCase()) && !item.sector.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
 
@@ -113,9 +116,20 @@ export const ComplaintsView = () => {
       {/* Filters Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-950/80 p-3 rounded-xl border border-slate-800">
         <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
+          <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1">
+            <Search className="w-3.5 h-3.5 text-slate-400" />
+            <input 
+              type="text"
+              placeholder="Search tickets or sectors..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-transparent text-white focus:outline-none text-xs w-44"
+            />
+          </div>
+
           <div className="flex items-center gap-1.5 text-slate-400">
             <Filter className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Filter Category:</span>
+            <span>Category:</span>
           </div>
           <select 
             value={filterCategory}
@@ -178,9 +192,13 @@ export const ComplaintsView = () => {
               <div className="flex items-center gap-4 text-[11px] font-mono text-slate-500 mt-1">
                 <span>Reporter: <strong className="text-slate-300">{ticket.reporter}</strong></span>
                 <span>Date: {ticket.date}</span>
-                <span className="flex items-center gap-1 text-cyan-400">
+                <button 
+                  onClick={() => upvoteComplaint(ticket.id)}
+                  className="flex items-center gap-1 text-cyan-400 hover:text-cyan-300 font-bold cursor-pointer transition"
+                  title="Click to confirm issue"
+                >
                   <ThumbsUp className="w-3 h-3" /> {ticket.upvotes} Citizens Confirmed
-                </span>
+                </button>
               </div>
             </div>
 
